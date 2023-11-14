@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    AuthController,
     HomeController,
 };
 
@@ -20,4 +21,12 @@ use App\Http\Controllers\{
 //     return view('welcome');
 // });
 
-Route::resource('/', HomeController::class);
+Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::post('login/authentication', [AuthController::class, 'Authentication'])->name('authentication');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('login/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('login/logout-nonaktif', [AuthController::class, 'logoutNonAktif'])->name('logout-nonaktif');
+
+    Route::resource('/', HomeController::class);
+});
