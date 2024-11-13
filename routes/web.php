@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthController,
     HomeController,
+    UserController,
 };
 
 /*
@@ -25,8 +26,10 @@ Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login/authentication', [AuthController::class, 'Authentication'])->name('authentication');
 
 Route::middleware(['auth'])->group(function () {
+    Route::resource('/', HomeController::class);
     Route::get('login/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('login/logout-nonaktif', [AuthController::class, 'logoutNonAktif'])->name('logout-nonaktif');
 
-    Route::resource('/', HomeController::class);
+    Route::resource('user', UserController::class);
+    Route::get('user/data/json', [UserController::class, 'json']);
 });
